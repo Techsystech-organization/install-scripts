@@ -1,0 +1,34 @@
+#!/bin/bash
+
+set -e
+
+echo "[+] Updating apt package index..."
+apt-get update
+
+echo "[+] Installing prerequisites..."
+apt-get install -y \
+    ca-certificates \
+    curl
+
+echo "[+] Adding Docker's official GPG key..."
+install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+echo "[+] Setting up Docker repository..."
+ARCH=$(dpkg --print-architecture)
+UBUNTU_CODENAME=$(lsb_release -cs)
+
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+      $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
+tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+echo "[+] Updating apt package index (Docker repo added)..."
+apt-get update
+
+echo "[+] Installing Docker Engine, CLI, and containerd..."
+apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+echo "[+] Docker installation complete! Run the hello world container with `sudo docker run hello-world`"
+docker --version
