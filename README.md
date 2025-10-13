@@ -12,5 +12,5 @@ chmod +x docker
 ```
 wget https://raw.githubusercontent.com/Techsystech-organization/install-scripts/refs/heads/main/caddy
 chmod +x caddy
-./caddy
+sudo ./caddy
 ```
