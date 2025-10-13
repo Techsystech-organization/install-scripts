@@ -1,4 +1,16 @@
 # Installation Scripts
 
 To install:
-- *Docker* `wget https://
+### Docker
+```
+wget https://raw.githubusercontent.com/Techsystech-organization/install-scripts/refs/heads/main/docker
+chmod +x docker
+./docker
+```
+
+### Caddy
+```
+wget https://raw.githubusercontent.com/Techsystech-organization/install-scripts/refs/heads/main/caddy
+chmod +x caddy
+./caddy
+```
