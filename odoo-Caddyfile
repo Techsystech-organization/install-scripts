@@ -1,0 +1,34 @@
+erp.techsystech.io, erp.techsystech.io:5938 {
+        encode zstd gzip
+
+        # Security headers (optional but recommended)
+        header {
+                Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+                Referrer-Policy "strict-origin-when-cross-origin"
+        }
+
+    # --- Longpolling to gevent on 8072 ---
+    @odoo_longpoll path /longpolling* /websocket*
+    handle @odoo_longpoll {
+        reverse_proxy http://192.168.2.89:8072 {
+            header_up X-Forwarded-For {remote}
+            header_up X-Forwarded-Proto {scheme}
+            header_up X-Real-IP {remote}
+            transport http {
+                read_timeout 70s
+            }
+        }
+    }
+        # Everything else goes to the main Odoo service on 8069
+        handle {
+                reverse_proxy http://192.168.2.89:8069 {
+                        # If the backend uses self-signed certs, keep this:
+                        #transport http {
+                        #       tls_insecure_skip_verify
+                        #}
+                        header_up X-Forwarded-For {remote}
+                        header_up X-Forwarded-Proto {scheme}
+                        header_up X-Real-IP {remote}
+                }
+        }
+}
