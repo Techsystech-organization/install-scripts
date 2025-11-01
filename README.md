@@ -14,3 +14,7 @@ wget https://raw.githubusercontent.com/Techsystech-organization/install-scripts/
 chmod +x caddy
 sudo ./caddy
 ```
+### Caddyfile for Odoo
+```
+wget https://raw.githubusercontent.com/Techsystech-organization/install-scripts/refs/heads/main/odoo-Caddyfile
+```
